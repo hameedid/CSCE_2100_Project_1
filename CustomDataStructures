@@ -43,37 +43,23 @@ public:
     }
 
     void insertAtMiddle(Driver* d, string targetCity) {
-        // Temporary safe version:
-        // until Address/Driver getters are added, insert near the middle
-        // instead of directly searching by city.
-        Node* curr = head;
+    Node* curr = head;
 
-        if (head == nullptr || head == tail) {
-            insertAtEnd(d);
-            return;
-        }
+    // find node with matching city
+    while (curr != nullptr && curr->data->getAddress().getCity() != targetCity) {
+        curr = curr->next;
+    }
 
-        int count = 0;
-        while (curr != nullptr) {
-            count++;
-            curr = curr->next;
-        }
+    // if not found OR at end → insert at end
+    if (curr == nullptr || curr == tail) {
+        insertAtEnd(d);
+        return;
+    }
 
-        int middleIndex = count / 2;
-        curr = head;
-
-        for (int i = 0; i < middleIndex - 1 && curr != nullptr; i++) {
-            curr = curr->next;
-        }
-
-        if (curr == nullptr || curr->next == nullptr) {
-            insertAtEnd(d);
-            return;
-        }
-
-        Node* newNode = new Node{d, curr->next, curr};
-        curr->next->prev = newNode;
-        curr->next = newNode;
+    // insert AFTER the found node
+    Node* newNode = new Node{d, curr->next, curr};
+    curr->next->prev = newNode;
+    curr->next = newNode;
     }
 
     Driver* removeNode(int id) {
