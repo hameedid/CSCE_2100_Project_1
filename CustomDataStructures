@@ -4,7 +4,7 @@
 
 //updated to match person1's variable names + removed redundant code
 
-#include <iostream> 
+#include <iostream>
 #include <string>
 #include "Driver.h"
 #include "Ticket.h"
@@ -17,10 +17,11 @@ struct Node {
     Node* prev;
 };
 
- class doublyLinkedList {
-    public:
-    Node *head;
-    Node *tail;
+class doublyLinkedList {
+public:
+    Node* head;
+    Node* tail;
+
     doublyLinkedList() : head(nullptr), tail(nullptr) {}
 
     void insertAtBeginning(Driver* d) {
@@ -30,39 +31,31 @@ struct Node {
         head = newNode;
     }
 
-    void insertAtMiddle (Driver* d, std::string targetCity) {
-        Node* curr = head;
-
-        while (curr && curr->data->getAddress().getCity() != targetCity) {
-            curr = curr->next;
-        }
-
-        if (!curr || curr == tail) {
-            insertAtEnd(d);}
-
-        else 
-        {
-            Node* newNode = new Node{d, curr->next, curr};
-            curr->next->prev = newNode;
-            curr->next = newNode;
-        }
-    }
-
-    void insertAtEnd (Driver* d) {
+    void insertAtEnd(Driver* d) {
         Node* newNode = new Node{d, nullptr, tail};
         if (tail) tail->next = newNode;
         else head = newNode;
         tail = newNode;
-
-
     }
 
-    Driver* removeNode(int id) { 
+    void insertAtMiddle(Driver* d, string targetCity) {
+        Node* curr = head;
+
+        // needs proper getter fix here
+        while (curr) {
+            curr = curr->next;
+        }
+
+        insertAtEnd(d);
+    }
+
+    Driver* removeNode(int id) {
         Node* curr = head;
         while (curr) {
             if (curr->data->getID() == id) {
                 if (curr->prev) curr->prev->next = curr->next;
                 else head = curr->next;
+
                 if (curr->next) curr->next->prev = curr->prev;
                 else tail = curr->prev;
 
@@ -74,28 +67,26 @@ struct Node {
         }
         return nullptr;
     }
- };
+};
 
+class hashTable {
+private:
+    static const int SIZE = 127;
 
- class hashTable {
-    private:
-        static const int SIZE = 127;
-        struct hashNode {
-            Driver* data;
-            hashNode* next;
-        };
+    struct hashNode {
+        Driver* data;
+        hashNode* next;
+    };
 
-        hashNode* table[SIZE];
+    hashNode* table[SIZE];
 
-
-
-    public:
+public:
     hashTable() {
-        for (int i = 0; i < SIZE; i++) table [i] = nullptr;
+        for (int i = 0; i < SIZE; i++) table[i] = nullptr;
     }
 
     void insert(Driver* d) {
-        int idx = d->getID % SIZE;
+        int idx = d->getID() % SIZE;
         hashNode* newNode = new hashNode{d, table[idx]};
         table[idx] = newNode;
     }
@@ -104,7 +95,7 @@ struct Node {
         int idx = id % SIZE;
         hashNode* curr = table[idx];
         while (curr) {
-            if (curr->data->getID == id) return curr->data;
+            if (curr->data->getID() == id) return curr->data;
             curr = curr->next;
         }
         return nullptr;
@@ -114,8 +105,9 @@ struct Node {
         int idx = id % SIZE;
         hashNode* curr = table[idx];
         hashNode* prev = nullptr;
+
         while (curr) {
-            if (curr->data->driverID == id) {
+            if (curr->data->getID() == id) {
                 if (prev) prev->next = curr->next;
                 else table[idx] = curr->next;
                 delete curr;
@@ -125,24 +117,29 @@ struct Node {
             curr = curr->next;
         }
     }
- };
+};
 
- class inactiveDriverDatabase { //inactive driver database
-    private:
+class inactiveDriverDatabase {
+private:
     doublyLinkedList list;
 
-    public:
-    void addInactiveDriver(Driver* d) {list.insertAtEnd(d);}
-    void search(int id) //
- };
+public:
+    void addInactiveDriver(Driver* d) {
+        list.insertAtEnd(d);
+    }
 
- class driverDatabase {
-    private:
+    void search(int id) {
+        cout << "Inactive driver search not implemented yet." << endl;
+    }
+};
+
+class driverDatabase {
+private:
     hashTable HASHTABLE;
     doublyLinkedList activeList;
     inactiveDriverDatabase inactiveList;
 
-    public:
+public:
     void insertDriver(Driver* d) {
         activeList.insertAtEnd(d);
         HASHTABLE.insert(d);
@@ -152,19 +149,19 @@ struct Node {
         return HASHTABLE.search(id);
     }
 
-    void moveToInactiveDriverDatabase (int id) {
+    void moveToInactiveDriverDatabase(int id) {
         Driver* d = activeList.removeNode(id);
         if (d) {
             HASHTABLE.remove(id);
             inactiveList.addInactiveDriver(d);
-            std::cout << "The Driver " << id << " has been successfully moved to the inactive database. ";
+            cout << "The Driver " << id << " has been successfully moved to the inactive database." << endl;
         }
     }
 
     void getRecentlyIssuedLicense(int n) {
         Node* curr = activeList.tail;
         for (int i = 0; i < n && curr; i++) {
-            curr->data->displayDriver();
+            curr->data->display();
             curr = curr->prev;
         }
     }
@@ -172,8 +169,8 @@ struct Node {
     void getOldestIssuedLicenses(int n) {
         Node* curr = activeList.head;
         for (int i = 0; i < n && curr; i++) {
-            curr->data->displayDriver();
+            curr->data->display();
             curr = curr->next;
         }
     }
- };
+};
