@@ -2,11 +2,11 @@
 using namespace std;
 
 void displayMenu() {
-    cout << "\n========== Driver Database System ==========" << endl;
-    cout << "1. Load driver data from file" << endl;
-    cout << "2. Insert a new driver" << endl;
+    cout << "Driver Database System" << endl;
+    cout << "1. Load driver data" << endl;
+    cout << "2. Add a new driver" << endl;
     cout << "3. Search for a driver" << endl;
-    cout << "4. Delete a driver / move to inactive database" << endl;
+    cout << "4. Delete a driver or move them to the inactive data bases" << endl;
     cout << "5. Show N most recently issued licenses" << endl;
     cout << "6. Show N oldest issued licenses" << endl;
     cout << "7. Display active drivers" << endl;
@@ -24,19 +24,19 @@ int main() {
 
         switch (choice) {
             case 1:
-                cout << "Load file feature will be connected here." << endl;
+                cout << "Load file " << endl;
                 break;
 
             case 2:
-                cout << "Insert driver feature will be connected here." << endl;
+                cout << "Insert driver" << endl;
                 break;
 
             case 3:
-                cout << "Search driver feature will be connected here." << endl;
+                cout << "Search driver" << endl;
                 break;
 
             case 4:
-                cout << "Delete/move to inactive feature will be connected here." << endl;
+                cout << "Delete/move driver" << endl;
                 break;
 
             case 5:
@@ -48,19 +48,19 @@ int main() {
                 break;
 
             case 7:
-                cout << "Display active drivers feature will be connected here." << endl;
+                cout << "Display active drivers " << endl;
                 break;
 
             case 8:
-                cout << "Display inactive drivers feature will be connected here." << endl;
+                cout << "Display inactive drivers " << endl;
                 break;
 
             case 9:
-                cout << "Exiting program..." << endl;
+                cout << "Exiting the program" << endl;
                 break;
 
             default:
-                cout << "Invalid choice. Please try again." << endl;
+                cout << "Wrong choice, Try again." << endl;
         }
 
     } while (choice != 9);
