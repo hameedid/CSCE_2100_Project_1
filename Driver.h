@@ -12,7 +12,7 @@ class Driver{
 protected:
     int driverID;
     string name;
-    string licenseDate;
+    Date licenseDate;
     int experience;
     string workType;
     string medicalStatus;
@@ -28,24 +28,24 @@ public:
 //class for Student Driver
 class StudentDriver: public Driver {
 public:
-    StudentDriver( int id, string n, Date l_date, int exp, string w_type, string m_status, Date b_date, Address a);
+    StudentDriver( int id, string n, Date licenseDate, int exp, string w_type, string m_status, Date b_date, Address a);
     void display();
 };
 
 //class for middle age driver
 class MiddleAgeDriver: public Driver {
-public:    MiddleAgeDriver(int id, string n, Date l_date, int exp, string w_type, string m_status, Date b_date, Address a);
+public:    MiddleAgeDriver(int id, string n, Date licenseDate, int exp, string w_type, string m_status, Date b_date, Address a);
     void display();
 };
 
 //class for senior driver
 class SeniorDriver: public Driver {
-public:    SeniorDriver(int id, string n, Date l_date, int exp, string w_type, string m_status, Date b_date, Address a);
+public:    SeniorDriver(int id, string n, Date licenseDate, int exp, string w_type, string m_status, Date b_date, Address a);
     void display();
 };
 
 //function to create driver based on age
-Driver* createDriver(int id, string n, Date l_date, int exp, string w_type, string m_status, Date b_date, Address a);
+Driver* createDriver(int id, string n, Date licenseDate, int exp, string w_type, string m_status, Date b_date, Address a);
 
 #endif
 
