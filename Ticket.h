@@ -5,6 +5,7 @@
 #include "Date.h"
 using namespace std;
 
+// Ticket class
 class Ticket {
 private:
     int ticketID;
