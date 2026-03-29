@@ -5,7 +5,9 @@ using namespace std;
 
 //Date class
 Date::Date(int d, int m, int y){
-  day=d; month=m, year=y;
+  day=d; 
+  month=m; 
+  year=y;
 }
 
 // calculating the age of the driver
