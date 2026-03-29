@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 
+//Address class
 class Address {
 private:
     string city;
