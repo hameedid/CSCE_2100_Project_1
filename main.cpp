@@ -1,4 +1,5 @@
 #include <iostream>
+#include "DriverDatabase.hpp"
 using namespace std;
 
 void displayMenu() {
@@ -17,6 +18,8 @@ void displayMenu() {
 
 int main() {
     int choice;
+    DriverDatabase db;
+    int loaded = 0;
 
     do {
         displayMenu();
