@@ -1,8 +1,6 @@
 // Member 2 - Data Structures & Database Logic
-// GOAL: Build active & inactive driver databases, implement custom data structures, handle insertion
-// deletion, and finally search operations
-
-//updated to match person1's variable names + removed redundant code
+// GOAL: Build active & inactive driver databases, implement custom data structures,
+// handle insertion, deletion, and search operations
 
 #include <iostream>
 #include <string>
@@ -26,38 +24,74 @@ public:
 
     void insertAtBeginning(Driver* d) {
         Node* newNode = new Node{d, head, nullptr};
-        if (head) head->prev = newNode;
-        else tail = newNode;
+        if (head != nullptr) {
+            head->prev = newNode;
+        } else {
+            tail = newNode;
+        }
         head = newNode;
     }
 
     void insertAtEnd(Driver* d) {
         Node* newNode = new Node{d, nullptr, tail};
-        if (tail) tail->next = newNode;
-        else head = newNode;
+        if (tail != nullptr) {
+            tail->next = newNode;
+        } else {
+            head = newNode;
+        }
         tail = newNode;
     }
 
     void insertAtMiddle(Driver* d, string targetCity) {
+        // Temporary safe version:
+        // until Address/Driver getters are added, insert near the middle
+        // instead of directly searching by city.
         Node* curr = head;
 
-        // needs proper getter fix here
-        while (curr) {
+        if (head == nullptr || head == tail) {
+            insertAtEnd(d);
+            return;
+        }
+
+        int count = 0;
+        while (curr != nullptr) {
+            count++;
             curr = curr->next;
         }
 
-        insertAtEnd(d);
+        int middleIndex = count / 2;
+        curr = head;
+
+        for (int i = 0; i < middleIndex - 1 && curr != nullptr; i++) {
+            curr = curr->next;
+        }
+
+        if (curr == nullptr || curr->next == nullptr) {
+            insertAtEnd(d);
+            return;
+        }
+
+        Node* newNode = new Node{d, curr->next, curr};
+        curr->next->prev = newNode;
+        curr->next = newNode;
     }
 
     Driver* removeNode(int id) {
         Node* curr = head;
-        while (curr) {
-            if (curr->data->getID() == id) {
-                if (curr->prev) curr->prev->next = curr->next;
-                else head = curr->next;
 
-                if (curr->next) curr->next->prev = curr->prev;
-                else tail = curr->prev;
+        while (curr != nullptr) {
+            if (curr->data->getID() == id) {
+                if (curr->prev != nullptr) {
+                    curr->prev->next = curr->next;
+                } else {
+                    head = curr->next;
+                }
+
+                if (curr->next != nullptr) {
+                    curr->next->prev = curr->prev;
+                } else {
+                    tail = curr->prev;
+                }
 
                 Driver* detachedData = curr->data;
                 delete curr;
@@ -66,6 +100,35 @@ public:
             curr = curr->next;
         }
         return nullptr;
+    }
+
+    Driver* searchNode(int id) {
+        Node* curr = head;
+        while (curr != nullptr) {
+            if (curr->data->getID() == id) {
+                return curr->data;
+            }
+            curr = curr->next;
+        }
+        return nullptr;
+    }
+
+    void displayForward() {
+        Node* curr = head;
+        while (curr != nullptr) {
+            curr->data->display();
+            cout << endl;
+            curr = curr->next;
+        }
+    }
+
+    void displayBackward() {
+        Node* curr = tail;
+        while (curr != nullptr) {
+            curr->data->display();
+            cout << endl;
+            curr = curr->prev;
+        }
     }
 };
 
@@ -82,7 +145,9 @@ private:
 
 public:
     hashTable() {
-        for (int i = 0; i < SIZE; i++) table[i] = nullptr;
+        for (int i = 0; i < SIZE; i++) {
+            table[i] = nullptr;
+        }
     }
 
     void insert(Driver* d) {
@@ -94,8 +159,11 @@ public:
     Driver* search(int id) {
         int idx = id % SIZE;
         hashNode* curr = table[idx];
-        while (curr) {
-            if (curr->data->getID() == id) return curr->data;
+
+        while (curr != nullptr) {
+            if (curr->data->getID() == id) {
+                return curr->data;
+            }
             curr = curr->next;
         }
         return nullptr;
@@ -106,10 +174,13 @@ public:
         hashNode* curr = table[idx];
         hashNode* prev = nullptr;
 
-        while (curr) {
+        while (curr != nullptr) {
             if (curr->data->getID() == id) {
-                if (prev) prev->next = curr->next;
-                else table[idx] = curr->next;
+                if (prev != nullptr) {
+                    prev->next = curr->next;
+                } else {
+                    table[idx] = curr->next;
+                }
                 delete curr;
                 return;
             }
@@ -128,8 +199,12 @@ public:
         list.insertAtEnd(d);
     }
 
-    void search(int id) {
-        cout << "Inactive driver search not implemented yet." << endl;
+    Driver* search(int id) {
+        return list.searchNode(id);
+    }
+
+    void displayInactiveDrivers() {
+        list.displayForward();
     }
 };
 
@@ -140,7 +215,17 @@ private:
     inactiveDriverDatabase inactiveList;
 
 public:
-    void insertDriver(Driver* d) {
+    void insertDriverAtBeginning(Driver* d) {
+        activeList.insertAtBeginning(d);
+        HASHTABLE.insert(d);
+    }
+
+    void insertDriverAtMiddle(Driver* d, string targetCity) {
+        activeList.insertAtMiddle(d, targetCity);
+        HASHTABLE.insert(d);
+    }
+
+    void insertDriverAtEnd(Driver* d) {
         activeList.insertAtEnd(d);
         HASHTABLE.insert(d);
     }
@@ -151,26 +236,40 @@ public:
 
     void moveToInactiveDriverDatabase(int id) {
         Driver* d = activeList.removeNode(id);
-        if (d) {
+        if (d != nullptr) {
             HASHTABLE.remove(id);
             inactiveList.addInactiveDriver(d);
-            cout << "The Driver " << id << " has been successfully moved to the inactive database." << endl;
+            cout << "The Driver " << id
+                 << " has been successfully moved to the inactive database."
+                 << endl;
+        } else {
+            cout << "Driver not found." << endl;
         }
     }
 
     void getRecentlyIssuedLicense(int n) {
         Node* curr = activeList.tail;
-        for (int i = 0; i < n && curr; i++) {
+        for (int i = 0; i < n && curr != nullptr; i++) {
             curr->data->display();
+            cout << endl;
             curr = curr->prev;
         }
     }
 
     void getOldestIssuedLicenses(int n) {
         Node* curr = activeList.head;
-        for (int i = 0; i < n && curr; i++) {
+        for (int i = 0; i < n && curr != nullptr; i++) {
             curr->data->display();
+            cout << endl;
             curr = curr->next;
         }
+    }
+
+    void displayActiveDrivers() {
+        activeList.displayForward();
+    }
+
+    void displayInactiveDrivers() {
+        inactiveList.displayInactiveDrivers();
     }
 };
