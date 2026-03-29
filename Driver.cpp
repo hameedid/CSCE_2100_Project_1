@@ -22,7 +22,9 @@ int Driver::getID() {
 int Driver::calculateAge() {
     return dob.getAge();
 }
-
+Address Driver::getAddress() const {
+    return address;
+}
 void Driver::display() {
     cout << "Driver ID: " << driverID << endl;
     cout << "Name: " << name << endl;
