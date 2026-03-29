@@ -2,48 +2,49 @@
 #include "Driver.h"
 using namespace std;
 
-// Driver class 
+// Driver class
 Driver::Driver(int id, string n, Date l_date, int exp, string w_type, string m_status, Date b_date, Address a) {
-        driverID = id;
-        name = n;
-        licenseDate = l_date;
-        experience = exp;
-        workType = w_type;
-        medicalStatus = m_status;
-        dob = b_date;
-        address = a;
+    driverID = id;
+    name = n;
+    licenseDate = l_date;
+    experience = exp;
+    workType = w_type;
+    medicalStatus = m_status;
+    dob = b_date;
+    address = a;
 }
 
 // displaying the driver information
 int Driver::getID() {
-        return driverID;
+    return driverID;
 }
+
 int Driver::calculateAge() {
-        return dob.getAge();
+    return dob.getAge();
 }
+
 void Driver::display() {
-        cout << "Driver ID: " << driverID << endl;
-        cout << "Name: " << name << endl;
-       
-        cout << "Date of Birth: ";
-        dob.display();
-        cout << "(Age: " << calculateAge() << ")" << endl;
-    
-        cout << "License Date: ";
-        licenseDate.display();
-        cout << endl;
+    cout << "Driver ID: " << driverID << endl;
+    cout << "Name: " << name << endl;
 
-        cout << "Experience: " << experience << " years" << endl;
-        cout << "Work Type: " << workType << endl;
-        cout << "Medical Status: " << medicalStatus << endl;
+    cout << "Date of Birth: ";
+    dob.display();
+    cout << " (Age: " << calculateAge() << ")" << endl;
 
-        cout << "Address: ";
-        address.display();
-        cout << endl;
+    cout << "License Date: ";
+    licenseDate.display();
+    cout << endl;
 
-        cout << "Tickets:\n" ;
-        cout << "Ticket info available" << endl;
-    }
+    cout << "Experience: " << experience << " years" << endl;
+    cout << "Work Type: " << workType << endl;
+    cout << "Medical Status: " << medicalStatus << endl;
+
+    cout << "Address: ";
+    address.display();
+    cout << endl;
+
+    cout << "Tickets: Ticket info available" << endl;
+}
 
 // StudentDriver class
 StudentDriver::StudentDriver(int id, string n, Date l_date, int exp, string w_type, string m_status, Date b_date, Address a)
@@ -51,7 +52,7 @@ StudentDriver::StudentDriver(int id, string n, Date l_date, int exp, string w_ty
 
 void StudentDriver::display() {
     Driver::display();
-    cout<< "Category: Student Driver(16-28)" << endl;
+    cout << "Category: Student Driver (16-28)" << endl;
 }
 
 // MiddleAgeDriver class
@@ -60,7 +61,7 @@ MiddleAgeDriver::MiddleAgeDriver(int id, string n, Date l_date, int exp, string 
 
 void MiddleAgeDriver::display() {
     Driver::display();
-    cout<< "Category: Middle Age Driver(29-50)" << endl;
+    cout << "Category: Middle Age Driver (29-50)" << endl;
 }
 
 // SeniorDriver class
@@ -69,12 +70,13 @@ SeniorDriver::SeniorDriver(int id, string n, Date l_date, int exp, string w_type
 
 void SeniorDriver::display() {
     Driver::display();
-    cout<< "Category: Senior Driver(51+)" << endl;
+    cout << "Category: Senior Driver (51+)" << endl;
 }
 
 // function to create driver based on age
 Driver* createDriver(int id, string n, Date l_date, int exp, string w_type, string m_status, Date b_date, Address a) {
     int age = b_date.getAge();
+
     if (age >= 16 && age <= 28) {
         return new StudentDriver(id, n, l_date, exp, w_type, m_status, b_date, a);
     } else if (age >= 29 && age <= 50) {
