@@ -8,6 +8,6 @@ private:
 public:
     Date(int d=1, int m=1, int y=2000);
     int getAge();
-    void display();
+    void display() const;
 };
 #endif
