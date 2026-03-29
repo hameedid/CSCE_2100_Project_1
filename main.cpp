@@ -24,7 +24,11 @@ int main() {
 
         switch (choice) {
             case 1:
-                cout << "Load file " << endl;
+                if (db.loadFromFile("data.txt", loaded)) {
+                    cout << "Loaded " << loaded << " drivers" << endl;
+                } else {
+                    cout << "Failed to load file" << endl;
+                }
                 break;
 
             case 2:
