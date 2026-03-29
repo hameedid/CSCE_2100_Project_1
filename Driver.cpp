@@ -42,10 +42,7 @@ void Driver::display() {
         cout << endl;
 
         cout << "Tickets:\n" ;
-        for (int i = 0; i < ticketCount; i++) {
-            tickets[i].display();
-            cout << endl;
-        }
+        cout << "Ticket info available" << endl;
     }
 
 // StudentDriver class
