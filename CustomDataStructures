@@ -15,14 +15,13 @@ struct Node {
     Driver* data;
     Node* next;
     Node* prev;
-}
+};
 
  class doublyLinkedList {
     public:
     Node *head;
     Node *tail;
     doublyLinkedList() : head(nullptr), tail(nullptr) {}
-
 
     void insertAtBeginning(Driver* d) {
         Node* newNode = new Node{d, head, nullptr};
@@ -34,7 +33,7 @@ struct Node {
     void insertAtMiddle (Driver* d, std::string targetCity) {
         Node* curr = head;
 
-        while (curr && curr->data->address.city != targetCity) {
+        while (curr && curr->data->getAddress().getCity() != targetCity) {
             curr = curr->next;
         }
 
@@ -61,7 +60,7 @@ struct Node {
     Driver* removeNode(int id) { 
         Node* curr = head;
         while (curr) {
-            if (curr->data->getID == id) {
+            if (curr->data->getID() == id) {
                 if (curr->prev) curr->prev->next = curr->next;
                 else head = curr->next;
                 if (curr->next) curr->next->prev = curr->prev;
