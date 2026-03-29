@@ -1,0 +1,213 @@
+// Member 2 - Data Structures & Database Logic
+// GOAL: Build active & inactive driver databases, implement custom data structures, handle insertion
+// deletion, and finally search operations
+
+#include <iostream> 
+#include <string>
+
+struct Date { //compositon relationships
+    int day, month, year;
+    int getAge() { return 2026 - year; }
+ };
+
+ struct Address {
+    std::string street, city, country, zipCode;
+ };
+
+ struct Ticket {
+    int ticketID;
+    std::string location;
+    int issuedDate;
+ }
+
+ struct Node { //custom DS node
+    Driver* data;
+    Node* next;
+    Node* prev;
+ }
+
+ class Driver { // driver from person 2 UML
+public: 
+    std::string driverName;
+    int driverAge;
+    int driverID;
+    Date licensedDate;
+    int experience;
+    std::string workType;
+    std::string medicalStatus;
+    Address address;
+    Date dob;
+    std::string frequentlyVisitedLocations;
+    bool hasReceivedTicket;
+    Date ticketIssuedDate;
+    std::string ticketIssuedLocation;
+
+    Driver() : hasReceivedTicket(false), driverAge(0) {}
+    ////
+    ////
+ };
+
+ class ageCategory : public Driver {}; 
+  class workCategory : public Driver {}; 
+   class experienceCategory : public Driver {}; 
+    class medicalCategory : public Driver {}; 
+
+ class doublyLinkedList { // custom DS doubly linked list
+    public:
+    Node *head;
+    Node *tail;
+    doublyLinkedList() : head(nullptr), tail(nullptr) {}
+
+
+    void insertAtBeginning(Driver* d) {
+        Node* newNode = new Node{d, head, nullptr};
+        if (head) head->prev = newNode;
+        else tail = newNode;
+        head = newNode;
+    }
+
+    void insertAtMiddle (Driver* d, std::string targetCity) {
+        Node* curr = head;
+        while (curr && curr->data->address.city != targetCity) {
+            curr = curr->next;
+        }
+        if (!curr || curr == tail) {
+            insertAtEnd(d);
+        else 
+        {
+            Node* newNode = new Node{d, curr->next, curr};
+            curr->next->prev = newNode;
+            curr->next = newNode;
+        }
+    }
+    }
+
+    void insertAtEnd (Driver* d) {
+        Node* newNode = new Node{d, nullptr, tail};
+        if (tail) tail->next = newNode;
+        else head = newNode;
+        tail = newNode;
+
+
+    }
+
+    Driver* removedNode(int id) { //deletion
+        Node* curr = head;
+        while (curr) {
+            if (curr->data->driverID == id) {
+                if (curr->prev) curr->prev->next = curr->next;
+                else head = curr->next;
+                if (curr->next) curr->next->prev = curr->prev;
+                else tail = curr->prev;
+
+                Driver* detachedData = curr->data;
+                delete curr;
+                return detachedData;
+            }
+            curr = curr->next;
+        }
+        return nullptr;
+    }
+ };
+
+
+ class hashTable { //custom DS hash table
+    private:
+        static const int SIZE = 127;
+        struct hashNode {
+            Driver* data;
+            hashNode* next;
+        };
+
+        hashNode* table[SIZE];
+
+
+
+    public:
+    hashTable() {
+        for (int i = 0; i < SIZE; i++) table [i] = nullptr;
+    }
+
+    void insert(Driver* d) {
+        int idx = d->driverID % SIZE;
+        hashNode* newNode = new hashNode{d, table[idx]};
+        table[idx] = newNode;
+    }
+
+    Driver* search(int id) {
+        int idx = id % SIZE;
+        hashNode* curr = table[idx];
+        while (curr) {
+            if (curr->data->driverID == id) return curr->data;
+            curr = curr->next;
+        }
+        return nullptr;
+    }
+
+    void remove(int id) {
+        int idx = id % SIZE;
+        hashNode* curr = table[idx];
+        hashNode* prev = nullptr;
+        while (curr) {
+            if (curr->data->driverID == id) {
+                if (prev) prev->next = curr->next;
+                else table[idx] = curr->next;
+                delete curr;
+                return;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+ };
+
+ class inactiveDriverDatabase { //inactive driver database
+    private:
+    doublyLinkedList list;
+
+    public:
+    void addInactiveDriver(Driver* d) {list.insertAtEnd(d);}
+    void search(int id) //
+ };
+
+ class driverDatabase {
+    private:
+    hashTable HASHTABLE;
+    doublyLinkedList activeList;
+    inactiveDriverDatabase inactiveList;
+
+    public:
+    void insertDriver(Driver* d) {
+        activeList.insertAtEnd(d);
+        hashTable.insert(d);
+    }
+
+    Driver* searchDriver(int id) {
+        return hashTable.search(id);
+    }
+
+    void moveToInactiveDriverDatabase (int id) {
+        Driver* d = activeList.removeNode(id);
+        if (d) {
+            hashTable.remove(id);
+            inactiveList.addInactiveDriver(d);
+            std::cout << "The Driver " << id << " has been successfully moved to the inactive database. ";
+        }
+    }
+
+    void getRecentlyIssuedLicense(int n) {
+        Node* curr = activeList.tail;
+        for (int = 0; i < n && curr; i++) {
+            curr->data->displayDriver();
+            curr = curr->prev;
+        }
+    }
+
+    void getOldestIssuedLicenses(int n) {
+        Node* curr = activeList.head;
+        for (int i = 0; i < n && curr; i++) {
+            curr->data->displayDriver();
+            curr = curr->next;
+        }
+    }
+ };
