@@ -1,3 +1,4 @@
+cat > Date.h << 'EOF'
 #ifndef DATE_H
 #define DATE_H
 
@@ -12,3 +13,4 @@ public:
 };
 
 #endif
+EOF
