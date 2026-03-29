@@ -29,7 +29,7 @@ void Driver::display() {
         dob.display();
         cout << "(Age: " << calculateAge() << ")" << endl;
     
-        cout << "License Date: " << licenseDate << endl;
+        cout << "License Date: ";
         licenseDate.display();
         cout << endl;
 
