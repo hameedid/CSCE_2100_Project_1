@@ -1,5 +1,7 @@
 #ifndef DATE_H
 #define DATE_H
+
+//Date class
 class Date {
 private:
     int day, month, year;
