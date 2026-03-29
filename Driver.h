@@ -24,6 +24,7 @@ public:
     virtual void display();
     int getID();
     int calculateAge();
+    Address getAddress() const;
 };
 
 //class for Student Driver
