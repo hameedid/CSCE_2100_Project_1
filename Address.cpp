@@ -10,6 +10,10 @@ Address::Address(string cty, string str, string ctry, string zip) {
         zipCode = zip;
 }
 
+string Address::getCity() const {
+    return city;
+}
+
 // displaying the address information
 void Address::display(){
   cout<< street << ", " << city << ", " << country << " " << zipCode << endl;
