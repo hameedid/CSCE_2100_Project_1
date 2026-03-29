@@ -2,57 +2,22 @@
 // GOAL: Build active & inactive driver databases, implement custom data structures, handle insertion
 // deletion, and finally search operations
 
+//updated to match person1's variable names + removed redundant code
+
 #include <iostream> 
 #include <string>
+#include "Driver.h"
+#include "Ticket.h"
 
-struct Date { //compositon relationships
-    int day, month, year;
-    int getAge() { return 2026 - year; }
- };
+using namespace std;
 
- struct Address {
-    std::string street, city, country, zipCode;
- };
-
- struct Ticket {
-    int ticketID;
-    std::string location;
-    int issuedDate;
- }
-
- struct Node { //custom DS node
+struct Node {
     Driver* data;
     Node* next;
     Node* prev;
- }
+}
 
- class Driver { // driver from person 2 UML
-public: 
-    std::string driverName;
-    int driverAge;
-    int driverID;
-    Date licensedDate;
-    int experience;
-    std::string workType;
-    std::string medicalStatus;
-    Address address;
-    Date dob;
-    std::string frequentlyVisitedLocations;
-    bool hasReceivedTicket;
-    Date ticketIssuedDate;
-    std::string ticketIssuedLocation;
-
-    Driver() : hasReceivedTicket(false), driverAge(0) {}
-    ////
-    ////
- };
-
- class ageCategory : public Driver {}; 
-  class workCategory : public Driver {}; 
-   class experienceCategory : public Driver {}; 
-    class medicalCategory : public Driver {}; 
-
- class doublyLinkedList { // custom DS doubly linked list
+ class doublyLinkedList {
     public:
     Node *head;
     Node *tail;
@@ -68,18 +33,20 @@ public:
 
     void insertAtMiddle (Driver* d, std::string targetCity) {
         Node* curr = head;
+
         while (curr && curr->data->address.city != targetCity) {
             curr = curr->next;
         }
+
         if (!curr || curr == tail) {
-            insertAtEnd(d);
+            insertAtEnd(d);}
+
         else 
         {
             Node* newNode = new Node{d, curr->next, curr};
             curr->next->prev = newNode;
             curr->next = newNode;
         }
-    }
     }
 
     void insertAtEnd (Driver* d) {
@@ -91,10 +58,10 @@ public:
 
     }
 
-    Driver* removedNode(int id) { //deletion
+    Driver* removeNode(int id) { 
         Node* curr = head;
         while (curr) {
-            if (curr->data->driverID == id) {
+            if (curr->data->getID == id) {
                 if (curr->prev) curr->prev->next = curr->next;
                 else head = curr->next;
                 if (curr->next) curr->next->prev = curr->prev;
@@ -111,7 +78,7 @@ public:
  };
 
 
- class hashTable { //custom DS hash table
+ class hashTable {
     private:
         static const int SIZE = 127;
         struct hashNode {
@@ -129,7 +96,7 @@ public:
     }
 
     void insert(Driver* d) {
-        int idx = d->driverID % SIZE;
+        int idx = d->getID % SIZE;
         hashNode* newNode = new hashNode{d, table[idx]};
         table[idx] = newNode;
     }
@@ -138,7 +105,7 @@ public:
         int idx = id % SIZE;
         hashNode* curr = table[idx];
         while (curr) {
-            if (curr->data->driverID == id) return curr->data;
+            if (curr->data->getID == id) return curr->data;
             curr = curr->next;
         }
         return nullptr;
@@ -179,17 +146,17 @@ public:
     public:
     void insertDriver(Driver* d) {
         activeList.insertAtEnd(d);
-        hashTable.insert(d);
+        HASHTABLE.insert(d);
     }
 
     Driver* searchDriver(int id) {
-        return hashTable.search(id);
+        return HASHTABLE.search(id);
     }
 
     void moveToInactiveDriverDatabase (int id) {
         Driver* d = activeList.removeNode(id);
         if (d) {
-            hashTable.remove(id);
+            HASHTABLE.remove(id);
             inactiveList.addInactiveDriver(d);
             std::cout << "The Driver " << id << " has been successfully moved to the inactive database. ";
         }
@@ -197,7 +164,7 @@ public:
 
     void getRecentlyIssuedLicense(int n) {
         Node* curr = activeList.tail;
-        for (int = 0; i < n && curr; i++) {
+        for (int i = 0; i < n && curr; i++) {
             curr->data->displayDriver();
             curr = curr->prev;
         }
