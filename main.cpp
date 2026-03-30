@@ -7,7 +7,7 @@ void displayMenu() {
     cout << "1. Load driver data" << endl;
     cout << "2. Add a new driver" << endl;
     cout << "3. Search for a driver" << endl;
-    cout << "4. Delete a driver or move them to the inactive data bases" << endl;
+    cout << "4. Delete a driver or move them to the inactive database" << endl;
     cout << "5. Show N most recently issued licenses" << endl;
     cout << "6. Show N oldest issued licenses" << endl;
     cout << "7. Display active drivers" << endl;
@@ -55,11 +55,11 @@ int main() {
                 break;
 
             case 7:
-                cout << "Display active drivers " << endl;
+                cout << "Display active drivers" << endl;
                 break;
 
             case 8:
-                cout << "Display inactive drivers " << endl;
+                cout << "Display inactive drivers" << endl;
                 break;
 
             case 9:
