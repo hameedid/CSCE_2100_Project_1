@@ -47,12 +47,26 @@ int main() {
                 break;
 
             case 5:
-                cout << "Recent licenses feature will be connected here." << endl;
+                DriverRecord rec;
+                if (db.getMostRecentLicense(rec)) {
+                    cout << "Most recent license: " << rec.licenseNumber
+                         << " for " << rec.firstName << " " << rec.lastName << endl;
+                } else {
+                    cout << "No driver data loaded." << endl;
+                }
                 break;
+            }
 
             case 6:
-                cout << "Oldest licenses feature will be connected here." << endl;
+                DriverRecord rec;
+                if (db.getOldestLicense(rec)) {
+                    cout << "Oldest license: " << rec.licenseNumber
+                         << " for " << rec.firstName << " " << rec.lastName << endl;
+                } else {
+                    cout << "No driver data loaded." << endl;
+                }
                 break;
+            }
 
             case 7:
                 cout << "Display active drivers" << endl;
